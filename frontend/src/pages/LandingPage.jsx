@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import { Sprout, Briefcase, ChevronRight, ShieldCheck, Zap, TrendingUp, QrCode, ShoppingBag } from 'lucide-react';
 import './landing.css';
 
+/**
+ * RaithuMandi Landing Page
+ * Farmer-Centric Phygital B2B Marketplace
+ */
 function LandingPage() {
   return (
     <div className="landing-page min-h-screen bg-bg">
