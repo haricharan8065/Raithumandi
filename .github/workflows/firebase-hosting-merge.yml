@@ -18,11 +18,11 @@ jobs:
           node-version: 20
 
       - name: Install Dependencies
-        working-directory: ./agritech-b2b
+        working-directory: ./frontend
         run: npm ci
 
       - name: Build Application
-        working-directory: ./agritech-b2b
+        working-directory: ./frontend
         run: npm run build
 
       - name: Deploy to Firebase
