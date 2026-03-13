@@ -1,5 +1,4 @@
 # Use the official lightweight Python image.
-# https://hub.docker.com/_/python
 FROM python:3.11-slim
 
 # Allow statements and log messages to immediately appear in the Knative logs
@@ -13,8 +12,8 @@ COPY . ./
 # Install production dependencies.
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
+# Make the startup script executable
+RUN chmod +x start.sh
 
-# Run the web service on container startup.
-CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 config.wsgi:application
+# Run the startup script which handles migrations, seeding, and server start
+CMD ["./start.sh"]
