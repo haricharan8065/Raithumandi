@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist",
+    "public": "agritech-b2b/dist",
     "ignore": [
       "firebase.json",
       "**/.*",
