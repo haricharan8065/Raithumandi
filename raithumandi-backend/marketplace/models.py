@@ -1,0 +1,91 @@
+from django.db import models
+from django.contrib.auth.models import AbstractUser
+
+class User(AbstractUser):
+    # Determine the role of the user
+    ROLE_CHOICES = (
+        ('FARMER', 'Farmer'),
+        ('AGENT', 'Village Agent'),
+        ('PROCESSOR', 'Processor'),
+        ('ADMIN', 'Admin'),
+    )
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='FARMER')
+    phone_number = models.CharField(max_length=15, unique=True)
+    
+class FarmerProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='farmer_profile')
+    aadhaar_number = models.CharField(max_length=12, unique=True, null=True, blank=True)
+    upi_id = models.CharField(max_length=100, null=True, blank=True)
+    village = models.CharField(max_length=100)
+    district = models.CharField(max_length=100)
+    # linked agent who onboarded them
+    agent = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='managed_farmers')
+    
+    def __str__(self):
+        return f"Farmer: {self.user.get_full_name()} ({self.village})"
+
+class ProcessorProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='processor_profile')
+    company_name = models.CharField(max_length=255)
+    gstin = models.CharField(max_length=15, unique=True)
+    company_address = models.TextField()
+
+    def __str__(self):
+        return self.company_name
+
+class Commodity(models.Model):
+    name = models.CharField(max_length=100) # e.g., 'Tomato', 'Maize', 'Paddy'
+    grade = models.CharField(max_length=50) # e.g., 'Grade A', 'Lokwan'
+    current_price_per_kg = models.DecimalField(max_digits=10, decimal_places=2)
+    min_quantity_kg = models.IntegerField(default=100)
+    
+    class Meta:
+        verbose_name_plural = "Commodities"
+
+    def __str__(self):
+        return f"{self.name} ({self.grade})"
+
+class Order(models.Model):
+    STATUS_CHOICES = (
+        ('PENDING', 'Pending Match'),
+        ('AGGREGATING', 'Aggregating at Village'),
+        ('IN_TRANSIT', 'In Transit'),
+        ('DELIVERED', 'Delivered & Paid'),
+        ('CANCELLED', 'Cancelled'),
+    )
+    processor = models.ForeignKey(ProcessorProfile, on_delete=models.CASCADE, related_name='orders')
+    commodity = models.ForeignKey(Commodity, on_delete=models.PROTECT)
+    target_quantity_kg = models.IntegerField()
+    fulfilled_quantity_kg = models.IntegerField(default=0)
+    target_delivery_date = models.DateField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
+    # Escrow amount calculated based on platform rate at time of order
+    escrow_amount = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Order #{self.id} - {self.processor.company_name} - {self.commodity.name}"
+
+class ProduceLog(models.Model):
+    STATUS_CHOICES = (
+        ('LOGGED', 'Logged by Agent'),
+        ('GRADED', 'Graded & Approved'),
+        ('DISPATCHED', 'Dispatched to Processor'),
+    )
+    agent = models.ForeignKey(User, on_delete=models.PROTECT, related_name='logged_produce')
+    farmer = models.ForeignKey(FarmerProfile, on_delete=models.PROTECT, related_name='produce_logs')
+    commodity = models.ForeignKey(Commodity, on_delete=models.PROTECT)
+    quantity_kg = models.DecimalField(max_digits=10, decimal_places=2)
+    # The rate applied at the time of logging
+    applied_rate = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='LOGGED')
+    # Link to the specific processor order they are contributing to
+    destination_order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=True, related_name='produce_logs')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    @property
+    def estimated_payout(self):
+        return self.quantity_kg * self.applied_rate
+
+    def __str__(self):
+        return f"Log #{self.id} - {self.farmer.user.get_full_name()} - {self.quantity_kg}kg {self.commodity.name}"

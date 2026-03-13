@@ -1,0 +1,23 @@
+# Node / Frontend
+**/node_modules/
+**/dist/
+**/.env.local
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
+
+# Python / Django Backend
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+**/venv/
+**/env/
+**/.env
+**/db.sqlite3
+**/media/
+**/staticfiles/
+
+# OS / Editor
+**/.DS_Store
+**/.vscode/
+**/.idea/
