@@ -14,7 +14,7 @@ function ProcessorLayout() {
         <div className="px-6 mb-8">
           <h2 className="text-xl font-bold text-primary flex items-center gap-2">
             <Briefcase size={24} />
-            AgriConnect
+            RaithuMandi
           </h2>
           <p className="text-xs text-muted mt-1">Processor Portal</p>
         </div>

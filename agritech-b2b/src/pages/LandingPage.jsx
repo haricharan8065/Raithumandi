@@ -10,7 +10,7 @@ function LandingPage() {
       <nav className="landing-nav flex items-center justify-between px-8 py-4 bg-surface border-b border-border sticky top-0 z-50">
          <div className="text-2xl font-bold text-primary flex items-center gap-2">
             <Sprout size={28} />
-            AgriConnect
+            RaithuMandi
          </div>
          <div className="flex gap-4">
             <Link to="/traceability" className="btn btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
