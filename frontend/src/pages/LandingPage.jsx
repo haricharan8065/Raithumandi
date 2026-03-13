@@ -19,8 +19,8 @@ function LandingPage() {
             <Link to="/marketplace" className="btn btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                <ShoppingBag size={16} /> Marketplace
             </Link>
-            <Link to="/processor" className="btn btn-outline">Processor Login</Link>
-            <Link to="/agent" className="btn btn-primary">Agent App</Link>
+            <Link to="/farmer" className="btn btn-primary" style={{ background: '#16a34a' }}>Farmer Portal</Link>
+            <Link to="/agent" className="btn btn-outline">Agent Portal</Link>
          </div>
       </nav>
 
@@ -31,16 +31,16 @@ function LandingPage() {
             
             <div className="space-y-6">
                <h1 className="text-5xl font-extrabold leading-tight">
-                  Direct from Farm. <br /> Straight to Factory.
+                  Farmer is King. <br /> Empowering the Origin.
                </h1>
                <p className="text-lg text-primary-light opacity-90 max-w-lg">
-                  The Phygital B2B Platform connecting Indian smallholder farmers directly to major food processors, eliminating middlemen and multiplying margins.
+                  RaithuMandi gives farmers the power to list produce directly, skip middlemen, and receive instant digital payouts through transparent validation.
                </p>
                <div className="flex gap-4 pt-4">
-                  <Link to="/processor" className="btn bg-white text-primary hover:bg-gray-100 px-8 py-4 text-lg">
-                     Source Produce
+                  <Link to="/farmer" className="btn bg-white text-primary hover:bg-gray-100 px-8 py-4 text-lg font-bold">
+                     Sell Your Produce
                   </Link>
-                  <Link to="/agent" className="btn border border-white/30 hover:bg-white/10 px-8 py-4 text-lg">
+                  <Link to="/agent-onboard" className="btn border border-white/30 hover:bg-white/10 px-8 py-4 text-lg">
                      Become an Agent
                   </Link>
                </div>

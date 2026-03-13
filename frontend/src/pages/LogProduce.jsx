@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Camera, Scale, Calculator } from 'lucide-react';
+import { Camera, Scale, Calculator, ArrowLeft } from 'lucide-react';
 import apiClient from '../api/client';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 
 function LogProduce() {
+  const [searchParams] = useSearchParams();
+  const queueId = searchParams.get('id');
+  const navigate = useNavigate();
+  
   const [farmers, setFarmers] = useState([]);
   const [commodities, setCommodities] = useState([]);
   const [selectedFarmer, setSelectedFarmer] = useState('');
@@ -14,7 +19,6 @@ function LogProduce() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch farmers and commodities on mount
     const fetchData = async () => {
       try {
         const [farmersRes, commoditiesRes] = await Promise.all([
@@ -24,17 +28,29 @@ function LogProduce() {
         setFarmers(farmersRes.data);
         setCommodities(commoditiesRes.data);
         
-        if (farmersRes.data.length > 0) setSelectedFarmer(farmersRes.data[0].id);
-        if (commoditiesRes.data.length > 0) {
-           setSelectedCommodity(commoditiesRes.data[0].id);
-           setPricePerKg(commoditiesRes.data[0].current_price_per_kg);
+        if (queueId) {
+          // If we're validating an existing request
+          const logRes = await apiClient.get(`logs/${queueId}/`);
+          const log = logRes.data;
+          setSelectedFarmer(log.farmer);
+          setSelectedCommodity(log.commodity);
+          setQuantity(log.quantity_kg);
+          
+          const commodity = commoditiesRes.data.find(c => c.id === log.commodity);
+          if (commodity) setPricePerKg(commodity.current_price_per_kg);
+        } else {
+          if (farmersRes.data.length > 0) setSelectedFarmer(farmersRes.data[0].id);
+          if (commoditiesRes.data.length > 0) {
+             setSelectedCommodity(commoditiesRes.data[0].id);
+             setPricePerKg(commoditiesRes.data[0].current_price_per_kg);
+          }
         }
       } catch (err) {
         console.error("Failed to load initial data", err);
       }
     };
     fetchData();
-  }, []);
+  }, [queueId]);
 
   const handleCommodityChange = (e) => {
     const id = e.target.value;
@@ -53,19 +69,25 @@ function LogProduce() {
      setLoading(true);
      setError(null);
      try {
-         // Agent ID is hardcoded for the prototype unless auth is implemented
-         await apiClient.post('/logs/', {
+         const payload = {
             farmer: selectedFarmer,
             commodity: selectedCommodity,
-            agent: 1, // Assumes Admin user exists with ID=1
+            agent: 1, 
             quantity_kg: quantity,
             applied_rate: pricePerKg,
-            status: 'LOGGED'
-         });
+            status: 'GRADED' // Move from LOGGED to GRADED
+         };
+
+         if (queueId) {
+             await apiClient.patch(`logs/${queueId}/`, payload);
+         } else {
+             await apiClient.post('logs/', payload);
+         }
+
          setSuccess(true);
-         setQuantity('');
+         setTimeout(() => navigate('/agent'), 2000);
      } catch (err) {
-         setError(err.response?.data?.detail || "Failed to log produce.");
+         setError(err.response?.data?.detail || "Failed to process produce.");
      } finally {
          setLoading(false);
      }
@@ -74,10 +96,15 @@ function LogProduce() {
   const totalPayout = quantity ? parseFloat(quantity) * parseFloat(pricePerKg) : 0;
 
   return (
-    <div className="log-produce animate-slide-up">
-      <div className="page-header">
-        <h2>Log Incoming Produce</h2>
-        <p>Record crop details for direct-to-processor routing.</p>
+    <div className="log-produce animate-slide-up pb-20">
+      <div className="page-header flex items-center gap-4">
+        <Link to="/agent" className="p-2 hover:bg-bg rounded-full transition-colors">
+          <ArrowLeft size={24} />
+        </Link>
+        <div>
+          <h2>{queueId ? 'Validate Produce' : 'Manual Produce Log'}</h2>
+          <p>{queueId ? 'Verify quality and grade the farmer\'s listing.' : 'Manually record crop details.'}</p>
+        </div>
       </div>
 
       <div className="card">
