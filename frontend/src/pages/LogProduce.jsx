@@ -18,8 +18,8 @@ function LogProduce() {
     const fetchData = async () => {
       try {
         const [farmersRes, commoditiesRes] = await Promise.all([
-          apiClient.get('/farmers/'),
-          apiClient.get('/commodities/')
+          apiClient.get('farmers/'),
+          apiClient.get('commodities/')
         ]);
         setFarmers(farmersRes.data);
         setCommodities(commoditiesRes.data);

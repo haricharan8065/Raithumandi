@@ -11,7 +11,7 @@ function TraceabilityPortal() {
   useEffect(() => {
     const fetchBatches = async () => {
       try {
-        const res = await apiClient.get('/batches/');
+        const res = await apiClient.get('batches/');
         setBatches(res.data);
       } catch (err) {
         console.error("Failed to fetch batches", err);

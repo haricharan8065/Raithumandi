@@ -29,11 +29,11 @@ function Dashboard() {
 
       <h3 className="section-title">Quick Actions</h3>
       <div className="action-grid">
-        <Link to="/onboard" className="action-card">
+        <Link to="/agent/onboard" className="action-card">
           <Users size={28} className="text-primary mb-2" />
           <span className="action-label">Onboard Farmer</span>
         </Link>
-        <Link to="/log" className="action-card">
+        <Link to="/agent/log" className="action-card">
           <LayoutList size={28} className="text-secondary mb-2" />
           <span className="action-label">Log Produce</span>
         </Link>

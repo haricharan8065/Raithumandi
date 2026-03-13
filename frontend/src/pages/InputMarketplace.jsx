@@ -25,8 +25,8 @@ function InputMarketplace() {
     const fetchData = async () => {
       try {
         const [prodRes, farmRes] = await Promise.all([
-          apiClient.get('/input-products/'),
-          apiClient.get('/farmers/')
+          apiClient.get('input-products/'),
+          apiClient.get('farmers/')
         ]);
         setProducts(prodRes.data);
         setFarmers(farmRes.data);
@@ -74,7 +74,7 @@ function InputMarketplace() {
     if (!selectedFarmer || cart.length === 0) return;
     try {
       for (const item of cart) {
-        await apiClient.post('/input-orders/', {
+        await apiClient.post('input-orders/', {
           farmer: selectedFarmer,
           agent: 1,
           product: item.product.id,

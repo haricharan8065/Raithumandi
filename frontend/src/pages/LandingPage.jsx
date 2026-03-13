@@ -34,15 +34,15 @@ function LandingPage() {
                   Direct from Farm. <br /> Straight to Factory.
                </h1>
                <p className="text-lg text-primary-light opacity-90 max-w-lg">
-                  The Phygital B2B Agri-Marketplace connecting Indian smallholder farmers directly to major food processors, eliminating middlemen and multiplying margins.
+                  The Phygital B2B Platform connecting Indian smallholder farmers directly to major food processors, eliminating middlemen and multiplying margins.
                </p>
                <div className="flex gap-4 pt-4">
-                  <button className="btn bg-white text-primary hover:bg-gray-100 px-8 py-4 text-lg">
+                  <Link to="/processor" className="btn bg-white text-primary hover:bg-gray-100 px-8 py-4 text-lg">
                      Source Produce
-                  </button>
-                  <button className="btn border border-white/30 hover:bg-white/10 px-8 py-4 text-lg">
+                  </Link>
+                  <Link to="/agent" className="btn border border-white/30 hover:bg-white/10 px-8 py-4 text-lg">
                      Become an Agent
-                  </button>
+                  </Link>
                </div>
             </div>
 

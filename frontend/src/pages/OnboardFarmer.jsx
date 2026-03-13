@@ -28,7 +28,7 @@ function OnboardFarmer() {
       const [firstName, ...lastNameParts] = formData.fullName.split(' ');
       const lastName = lastNameParts.join(' ');
       
-      const userRes = await apiClient.post('/users/', {
+      const userRes = await apiClient.post('users/', {
         username: formData.phone,
         phone_number: formData.phone,
         first_name: firstName,
@@ -37,7 +37,7 @@ function OnboardFarmer() {
       });
       
       // 2. Create Farmer Profile
-      await apiClient.post('/farmers/', {
+      await apiClient.post('farmers/', {
         user_id: userRes.data.id,
         aadhaar_number: formData.aadhaar,
         upi_id: formData.upi,
