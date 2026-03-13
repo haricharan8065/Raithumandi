@@ -12,6 +12,10 @@ import ProcessorLayout from './pages/ProcessorLayout';
 import ProcessorDashboard from './pages/ProcessorDashboard';
 import ProcessorOrder from './pages/ProcessorOrder';
 
+// New Feature Pages
+import TraceabilityPortal from './pages/TraceabilityPortal';
+import InputMarketplace from './pages/InputMarketplace';
+
 // Landing Page
 import LandingPage from './pages/LandingPage';
 
@@ -66,6 +70,12 @@ function App() {
                <Route path="order" element={<ProcessorOrder />} />
                <Route path="shipments" element={<div className="p-8"><h2 className="text-xl font-bold">Incoming Shipments</h2><p className="text-muted mt-2">Map view and shipment tracking will be implemented here.</p></div>} />
             </Route>
+
+            {/* Traceability Portal */}
+            <Route path="/traceability" element={<TraceabilityPortal />} />
+
+            {/* Input Marketplace */}
+            <Route path="/marketplace" element={<InputMarketplace />} />
           </Routes>
         </main>
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sprout, Briefcase, ChevronRight, ShieldCheck, Zap, TrendingUp } from 'lucide-react';
+import { Sprout, Briefcase, ChevronRight, ShieldCheck, Zap, TrendingUp, QrCode, ShoppingBag } from 'lucide-react';
 import './landing.css';
 
 function LandingPage() {
@@ -13,6 +13,12 @@ function LandingPage() {
             AgriConnect
          </div>
          <div className="flex gap-4">
+            <Link to="/traceability" className="btn btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+               <QrCode size={16} /> Traceability
+            </Link>
+            <Link to="/marketplace" className="btn btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+               <ShoppingBag size={16} /> Marketplace
+            </Link>
             <Link to="/processor" className="btn btn-outline">Processor Login</Link>
             <Link to="/agent" className="btn btn-primary">Agent App</Link>
          </div>
@@ -97,6 +103,30 @@ function LandingPage() {
                   <h3 className="text-xl font-bold mb-3">Village Champions</h3>
                   <p className="text-muted">Instead of expecting farmers to use complex apps, we empower local youth (Agents) to manage logistics and quality grading.</p>
                </div>
+
+               {/* Feature 4 - Traceability */}
+               <Link to="/traceability" className="p-8 bg-bg rounded-2xl border border-border hover:shadow-lg transition-shadow cursor-pointer" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style={{ background: '#ecfdf5', color: '#059669' }}>
+                     <QrCode size={28} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3">Farm-to-Fork Traceability</h3>
+                  <p className="text-muted">Every batch gets a unique QR code. Track quality checkpoints from harvest → aggregation → transit → delivery with full transparency.</p>
+                  <p style={{ color: '#2d6a4f', fontWeight: '600', marginTop: '0.75rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                     Explore → 
+                  </p>
+               </Link>
+
+               {/* Feature 5 - Input Marketplace */}
+               <Link to="/marketplace" className="p-8 bg-bg rounded-2xl border border-border hover:shadow-lg transition-shadow cursor-pointer" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style={{ background: '#fef3c7', color: '#d97706' }}>
+                     <ShoppingBag size={28} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3">Input Marketplace</h3>
+                  <p className="text-muted">Farmers can purchase high-quality seeds, fertilizers, and equipment at wholesale prices through agents. Closing the B2C loop.</p>
+                  <p style={{ color: '#d97706', fontWeight: '600', marginTop: '0.75rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                     Shop Now →
+                  </p>
+               </Link>
 
             </div>
          </div>
